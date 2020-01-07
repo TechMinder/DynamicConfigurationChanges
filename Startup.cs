@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HandlerDynamicConfigurationChanges.ConfigurationChanges;
-using HandlerDynamicConfigurationChanges.Services;
+using DynamicConfigurationChanges.ConfigurationChanges;
+using DynamicConfigurationChanges.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HandlerDynamicConfigurationChanges
+namespace DynamicConfigurationChanges
 {
     public class Startup
     {

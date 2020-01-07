@@ -1,7 +1,7 @@
-﻿using HandlerDynamicConfigurationChanges.ConfigurationChanges;
+﻿using DynamicConfigurationChanges.ConfigurationChanges;
 using Microsoft.Extensions.Options;
 
-namespace HandlerDynamicConfigurationChanges.Services
+namespace DynamicConfigurationChanges.Services
 {
     public class SingletonClass
     {

@@ -1,7 +1,7 @@
-﻿using HandlerDynamicConfigurationChanges.Services;
+﻿using DynamicConfigurationChanges.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HandlerDynamicConfigurationChanges.Controllers
+namespace DynamicConfigurationChanges.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
