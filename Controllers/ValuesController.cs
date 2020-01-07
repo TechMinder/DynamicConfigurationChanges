@@ -18,36 +18,13 @@ namespace DynamicConfigurationChanges.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-
-            var response = $"TransientScope:\r\nOption Value:{_serviceClient.GetUrl()}\r\nMonitor Value: {_serviceClient.GetUpdatedUrl()}\r\nSnapshot Value:{_serviceClient.GetSnapshotUrl()}" +
-                           $"\r\nSingleton:\r\nOption Value:{_singletonClass.GetUrl()}\r\nnMonitor Value: {_singletonClass.GetUpdatedUrl()}\r\nSnapshot Value:{_singletonClass.GetSnapshotUrl()}";
+            //run with Chrome or Edge browser to see the result in the browser
+            var response = $"DI Scope Transient:\r\nIOptions:{_serviceClient.GetUrl()}\r\nIOptionsMonitor: {_serviceClient.GetUpdatedUrl()}\r\nIOptionsSnapshot:{_serviceClient.GetSnapshotUrl()}" +
+                           $"\r\n\r\nDI Scope Singleton:\r\nIOption:{_singletonClass.GetUrl()}\r\nIOptionsMonitor: {_singletonClass.GetUpdatedUrl()}\r\nIOptionsSnapshot:{_singletonClass.GetSnapshotUrl()}";
 
             return response;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+       
     }
 }
