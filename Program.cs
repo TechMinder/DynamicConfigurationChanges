@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DynamicConfigurationChanges.ConfigProvider;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,12 @@ namespace DynamicConfigurationChanges
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args)                
+                .ConfigureAppConfiguration((hostingContext, config) => {
+
+                    config.AddInMemoryCollection(new Dictionary<string, string>() { { "external:websitename", "localhost" }, { "external:owner", "self" } });
+                    config.AddHttpConfiguration();
+                })
                 .UseStartup<Startup>();
     }
 }

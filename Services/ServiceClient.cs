@@ -32,5 +32,15 @@ namespace DynamicConfigurationChanges.Services
         {
             return _optionsSnapshot.Value.Url;
         }
+
+        public string GetSnapshotHttpSourceKey()
+        {
+            return _optionsSnapshot.Value.CustomProvider;
+        }
+
+        public string GetMonitorHttpSourceKey()
+        {
+            return _optionsMonitor.CurrentValue.CustomProvider;
+        }
     }
 }

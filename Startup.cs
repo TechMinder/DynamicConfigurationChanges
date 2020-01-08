@@ -28,6 +28,7 @@ namespace DynamicConfigurationChanges
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
             services.Configure<ExternalConfig>(Configuration.GetSection("external"));
             services.AddScoped<ServiceClient>();
             services.AddSingleton<SingletonClass>();

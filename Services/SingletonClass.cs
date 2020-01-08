@@ -33,5 +33,14 @@ namespace DynamicConfigurationChanges.Services
         {
             return "Snapshot cannot be injected to Singleton";
         }
+
+        public string GetMonitorHttpSourceKey()
+        {
+            return _optionsMonitor.CurrentValue.CustomProvider;
+        }
+        public string GetOptionHttpSourceKey()
+        {
+            return _options.Value.CustomProvider;
+        }
     }
 }
