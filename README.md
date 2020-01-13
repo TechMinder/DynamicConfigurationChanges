@@ -1,4 +1,4 @@
-# DynamicConfigurationChanges
+# Handling Dynamic Configuration Updates
 ASP.Net Core IOptions/IOptionsMonitor/IOptionsSnapshot example
 Sample uses ASP.NET 2.1.1. The sample should work with all the higher versions as well.
 #
