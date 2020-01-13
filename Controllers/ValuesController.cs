@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DynamicConfigurationChanges.Controllers
 {
@@ -48,6 +50,47 @@ namespace DynamicConfigurationChanges.Controllers
         public ActionResult<string> GetSettings()
         {
             return Ok(new [] { new { Key= "external:customprovider", Value= "azure" }, new { Key = "external:url", Value = "http://azure.com/vault" } });
+        }
+        [HttpGet]
+        [Route("settings/{token}")]
+        public ActionResult<string> GetSettingsByToken(string token) //use GUID for token
+        {
+            var collection = new[] { new { Token="1",
+                                           Data = new[] { new { Key = "external:customprovider",
+                                                                Value = "azure-token1" },
+                                                          new { Key = "external:url",
+                                                                Value = "http://azure.com/vault1" }}
+                                         },
+                                    new { Token="2",
+                                          Data = new[] { new { Key = "external:customprovider",
+                                                               Value = "azure-token2" },
+                                                         new { Key = "external:url",
+                                                               Value = "http://azure.com/vault2" } } 
+                                        }};
+
+            return Ok(collection.Where(i => i.Token == token).Select(i => i.Data).FirstOrDefault()); // this is to explain, in real application you want to handle all the edge cases
+        }
+
+        [HttpPost]
+        [Route("settings/{token}")]
+        public async Task<ActionResult> PostToken([FromRoute]string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:50532/api/", true);
+                var response = await client.GetAsync($"values/settings/{token}");
+
+                var stringContent = await response.Content.ReadAsStringAsync();
+                //do the following from the centralize place which can be reused. This sample is not to show the design priciple or pattern.
+                // but to show the various ideas around pushing configuration changes
+                var array = Newtonsoft.Json.JsonConvert.DeserializeObject<HostedService.ConfiugrationHostedService.Settings[]>(stringContent);
+                var dictionary = array.ToDictionary(s => s.Key, s => s.Value);
+                var configProvider = ((ConfigurationRoot)_configuration).Providers.Where(c => c.GetType() == typeof(HttpCustomConfigProvider)).FirstOrDefault();
+                ((HttpCustomConfigProvider)configProvider).HttpKeyValuesCollection = dictionary;
+
+            }          
+            
+            return Ok();
         }
         [HttpPost]
         [Route("{provider}")]

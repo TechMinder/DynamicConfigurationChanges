@@ -1,6 +1,7 @@
 ﻿using DynamicConfigurationChanges.ConfigProvider;
 using DynamicConfigurationChanges.ConfigurationChanges;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DynamicConfigurationChanges.HostedService
 {
-    public class ConfiugrationHostedService : CustomHostedService
+    public class ConfiugrationHostedService : BackgroundService
     {
         private readonly ILogger<ConfiugrationHostedService> _logger;
         private readonly IOptions<ConfiugrationApiSettings> _settings;
