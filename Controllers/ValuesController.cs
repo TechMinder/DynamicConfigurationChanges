@@ -1,8 +1,10 @@
 ﻿using DynamicConfigurationChanges.ConfigProvider;
 using DynamicConfigurationChanges.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicConfigurationChanges.Controllers
 {
@@ -12,10 +14,12 @@ namespace DynamicConfigurationChanges.Controllers
     {
         private ServiceClient _serviceClient;
         private SingletonClass _singletonClass;
-        public ValuesController(ServiceClient serviceClient, SingletonClass singletonClass)
+        private IConfiguration _configuration;
+        public ValuesController(ServiceClient serviceClient, SingletonClass singletonClass, IConfiguration configuration)
         {
             _serviceClient = serviceClient;
             _singletonClass = singletonClass;
+            _configuration = configuration;
         }
         // GET api/values
         [HttpGet]
@@ -38,11 +42,20 @@ namespace DynamicConfigurationChanges.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("settings")]
+        public ActionResult<string> GetSettings()
+        {
+            return Ok(new [] { new { Key= "external:customprovider", Value= "azure" }, new { Key = "external:url", Value = "http://azure.com/vault" } });
+        }
         [HttpPost]
         [Route("{provider}")]
         public ActionResult<string> Post([FromRoute]string provider)
         {
-            HttpCustomConfigProvider.HttpKeyValuesCollection = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "external:customprovider", provider } }; ;
+            //HttpCustomConfigProvider.HttpKeyValuesCollection = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "external:customprovider", provider } }; ;
+             var configProvider= ((ConfigurationRoot)_configuration).Providers.Where(c=> c.GetType() == typeof(HttpCustomConfigProvider)).FirstOrDefault();
+            ((HttpCustomConfigProvider)configProvider).HttpKeyValuesCollection = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "external:customprovider", provider } }; 
             return Ok();
         }
     }

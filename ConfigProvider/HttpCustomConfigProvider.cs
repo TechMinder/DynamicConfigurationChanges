@@ -6,26 +6,40 @@ namespace DynamicConfigurationChanges.ConfigProvider
 {
     public class HttpCustomConfigProvider : ConfigurationProvider
     {
-        private static HttpCustomConfigProvider _provider;
+       
         public HttpCustomConfigProvider()
         {
             HttpKeyValuesCollection = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "external:customprovider", "http" } };
         }
 
-        private static Dictionary<string, string> _httpKeyValuesCollection;
-        public static Dictionary<string, string> HttpKeyValuesCollection
+        private Dictionary<string, string> _httpKeyValuesCollection;
+        public Dictionary<string, string> HttpKeyValuesCollection
         { get { return _httpKeyValuesCollection; } set {
 
                 _httpKeyValuesCollection = value;
-                if (_provider != null)
-                    _provider.Data = value;
-
+                Reload();
+                OnReload();
+        
             } }
         public override void Load()
-        {
-            _provider = this;
-
+        {       
             Data = HttpKeyValuesCollection;
+
+        }
+
+        private void Reload()
+        {
+            if (Data != null && Data.Count > 0) //merge
+            {
+                foreach (var item in HttpKeyValuesCollection)
+                {
+                    if (this.Data.ContainsKey(item.Key))
+                        this.Data[item.Key] = item.Value;
+                    else
+                        this.Set(item.Key, item.Value);
+                }
+
+            }
         }
 
         

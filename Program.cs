@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using DynamicConfigurationChanges.ConfigProvider;
+﻿using DynamicConfigurationChanges.ConfigProvider;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace DynamicConfigurationChanges
 {
@@ -25,6 +21,7 @@ namespace DynamicConfigurationChanges
                     config.AddInMemoryCollection(new Dictionary<string, string>() { { "external:websitename", "localhost" }, { "external:owner", "self" } });
                     config.AddHttpConfiguration();
                 })
+                .UseShutdownTimeout(TimeSpan.FromSeconds(10))
                 .UseStartup<Startup>();
     }
 }
