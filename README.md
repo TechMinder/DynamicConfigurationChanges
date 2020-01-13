@@ -1,6 +1,6 @@
 # Handling Dynamic Configuration Updates
-ASP.Net Core IOptions/IOptionsMonitor/IOptionsSnapshot example
-Sample uses ASP.NET 2.1.1. The sample should work with all the higher versions as well.
+ASP.Net Core IOptions/IOptionsMonitor/IOptionsSnapshot example.
+This sample uses ASP.NET 2.1.1. The sample should work with all the higher versions as well.
 #
 There are many ways to update the configuration while application running (ASP.NET core). It allows you to update the settings configured in AppSetting.json file. However, the old settings do not to be updated on the disk.
 That means the settings will be reloaded upon the Application restart.
